@@ -11,13 +11,13 @@ cred = credentials.Certificate(
 
 firebase_admin.initialize_app(cred)
 
-# Load your time-series dataset (assuming it's in a CSV file)
+# Load your time-series dataset
 dataset = pd.read_csv(
     r"C:\Users\Stark\Desktop\IoT-Dashboard\prepareData\dataset.csv")
 
 # Split the dataset into two parts
-part1 = dataset.tail(3509)
-part2 = dataset.iloc[:-3509]
+part1 = dataset.tail(3510)
+part2 = dataset.iloc[:-3510]
 
 # Store Part 1 in the temporary collection
 db = firestore.client()
@@ -30,7 +30,7 @@ for _, row in part1.iterrows():
     temporary_collection.document(time_str).set(row.to_dict())
 
 
-# Split Part 2 into groups of 60 records and store them as Gzip-compressed files in the archive collection
+# Split Part 2 into groups of half-day and store them as Gzip-compressed files in the archive collection
 archive_collection = db.collection("archive")
 grouped_part2 = [part2.iloc[i:i+43200] for i in range(0, len(part2), 43200)]
 
@@ -42,9 +42,9 @@ for i, group in enumerate(grouped_part2):
     # Format the date as desired for use as the document ID
     formatted_date = date_field.strftime("%Y-%m-%d")
 
-    # Create a unique identifier within the range 0-23
-    unique_id = i % 2  # This will wrap around within the range 0-23
-
+    # Create a unique identifier separate data to AM/PM
+    unique_id = i % 2 
+    
     # Create the document ID by combining the date and unique identifier without the time
     document_id = f"{formatted_date}_{unique_id}"
 
