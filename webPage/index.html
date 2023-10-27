@@ -50,5 +50,41 @@
             </div>
         </div>
     </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-analytics.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCieUJHOvKpPm7OT0jgI7uTfzLtC3fCBsM",
+          authDomain: "iot-dashboard-66709.firebaseapp.com",
+          projectId: "iot-dashboard-66709",
+          storageBucket: "iot-dashboard-66709.appspot.com",
+          messagingSenderId: "336370107618",
+          appId: "1:336370107618:web:536306a4fe5ce6ff80cabb",
+          measurementId: "G-X8PN718VWN"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        const tempCol = collection(db, 'temporary');
+        getDocs(tempCol).then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            console.log(data);
+            //const div = document.getElementById("your_div_id");
+            //div.innerHTML = JSON.stringify(data);
+        });
+        })
+        .catch((error) => {
+        console.error("Error getting documents: ", error);
+        });
+
+      </script>
 </body>
 </html>
