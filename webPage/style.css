@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap');
 
 
@@ -10,7 +9,7 @@
 
 body {
     font-family: 'Prompt', sans-serif;
-    padding: 2rem;
+    padding: 0.5rem 1rem;
     background-color: #eeeeee;
 }
 
@@ -18,7 +17,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 65vh;
+    height: 60vh;
     width: 100%;
     padding: 1.5rem;
     gap: 1rem;
@@ -32,14 +31,14 @@ body {
 }
 
 .rightBoard {
-    height: 65%;
+    height: 328px;
     width: 30%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.rightBoard .data-box{
+.rightBoard .data-box {
     width: 100%;
     height: 100%;
     text-align: center;
@@ -54,7 +53,7 @@ body {
 }
 
 .rightBoard .data-box .big-value {
-    font-size: 90px;
+    font-size: 4.3rem;
 }
 
 
@@ -65,7 +64,7 @@ body {
 }
 
 .data-box {
-    background-color: #fff ;
+    background-color: #fff;
     border-radius: 15px;
     border: none;
     padding: 1rem 2rem;
@@ -107,9 +106,9 @@ body {
 }
 
 .button-div button {
-    width: 30%;      
+    width: 30%;
     background-color: #fff;
-    border-radius: 15px;  
+    border-radius: 15px;
     height: 30%;
     font-size: 20px;
     cursor: pointer;
