@@ -18,26 +18,34 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
-// Retriving Data
-/*
-const tempCol = collection(db, 'temporary');
-getDocs(tempCol).then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
-    });
-})
-    .catch((error) => {
-        console.error("Error getting documents: ", error);
-    });
-*/
-
 // Collection of data
-const tempList = [30, 30.22, 34.13, 23];
-const humidList = [0.61, 0.62, 0.60, 0.64];
-const genList = [0.74, 0.54, 0.67];
-const useList = [0.98, 0.83, 0.94];
-const netList = [0.24, 0.29, 0.27];
+const tempList = [];
+const humidList = [];
+const genList = [];
+const useList = [];
+const netList = [];
 
+// Retriving Data
+function test() {
+    console.log("testtt")
+    const tempCol = collection(db, 'temporary');
+    getDocs(tempCol).then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            tempList.push(data.temperature);
+            humidList.push(data.humidity);
+            genList.push(data["gen [kW]"]);
+            useList.push(data["use [kW]"]);
+            netList.push(data["net [kW]"]);
+        });
+    })
+        .catch((error) => {
+            console.error("Error getting documents: ", error);
+        });
+}
+
+const test_btn = document.getElementById('test-btn');
+test_btn.addEventListener('click', test)
 
 // Calculating Data
 function AvgData(list) {
@@ -50,6 +58,8 @@ function SumData(list) {
     return sum
 }
 
+
+// Showing data on webpage
 function ShowData(list, divID, postfix) {
     let data = 0;
     if (list == tempList) {
@@ -64,8 +74,6 @@ function ShowData(list, divID, postfix) {
     div.innerHTML = data.toFixed(2) + postfix;
 }
 
-
-// Showing data on webpage
 ShowData(tempList, "temp-value", " °C");
 ShowData(humidList, "humid-value", " %");
 ShowData(genList, "gen-value", " kW");
