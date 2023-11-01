@@ -17,6 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
+const tempCol = collection(db, 'temporary');
 
 // Collection of data
 const tempList = [];
@@ -24,37 +25,18 @@ const humidList = [];
 const genList = [];
 const useList = [];
 const netList = [];
-
-// Retriving Data
-function test() {
-    console.log("testtt")
-    const tempCol = collection(db, 'temporary');
-    getDocs(tempCol).then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            tempList.push(data.temperature);
-            humidList.push(data.humidity);
-            genList.push(data["gen [kW]"]);
-            useList.push(data["use [kW]"]);
-            netList.push(data["net [kW]"]);
-        });
-    })
-        .catch((error) => {
-            console.error("Error getting documents: ", error);
-        });
-}
-
-const test_btn = document.getElementById('test-btn');
-test_btn.addEventListener('click', test)
+var date = "";
+var time = "";
+var checkFetch = false;
 
 // Calculating Data
 function AvgData(list) {
-    const avg = list.reduce((a, b) => a + b, 0) / list.length;
+    const avg = list.reduce((a, b) => parseFloat(a) + parseFloat(b), 0) / list.length;
     return avg
 }
 
 function SumData(list) {
-    const sum = list.reduce((a, b) => a + b, 0);
+    const sum = list.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
     return sum
 }
 
@@ -62,20 +44,44 @@ function SumData(list) {
 // Showing data on webpage
 function ShowData(list, divID, postfix) {
     let data = 0;
-    if (list == tempList) {
+    if (list == tempList || list == humidList) {
         data = AvgData(list);
-    } else if (list == humidList) {
-        data = 100 * AvgData(list);
-    }
-    else {
+    } else {
         data = SumData(list);
     }
     const div = document.getElementById(`${divID}`);
     div.innerHTML = data.toFixed(2) + postfix;
 }
 
-ShowData(tempList, "temp-value", " °C");
-ShowData(humidList, "humid-value", " %");
-ShowData(genList, "gen-value", " kW");
-ShowData(useList, "use-value", " kW");
-ShowData(netList, "net-value", " kW");
+// Retrieving Data
+function FetchData() {
+    console.log("Retrieving data")
+    getDocs(tempCol).then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            tempList.push(data.temperature);
+            humidList.push(data.humidity);
+            genList.push(data.gen);
+            useList.push(data.use);
+            netList.push(data.net);
+            date = data.date;
+            time = data.time;
+        });
+        
+        ShowData(tempList, "temp-value", " °C");
+        ShowData(humidList, "humid-value", " %");
+        ShowData(genList, "gen-value", " kW");
+        ShowData(useList, "use-value", " kW");
+        ShowData(netList, "net-value", " kW");
+        const date_div = document.getElementById("date-value");
+        const time_div = document.getElementById("time-value");
+        date_div.innerHTML = date;
+        time_div.innerHTML = time;
+    })
+        .catch((error) => {
+            console.error("Error getting documents: ", error);
+        });
+}
+
+FetchData();
+
