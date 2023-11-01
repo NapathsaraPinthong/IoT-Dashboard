@@ -114,6 +114,6 @@ body {
     cursor: pointer;
 }
 
-#today-btn {
+.bold {
     font-weight: 800;
 }

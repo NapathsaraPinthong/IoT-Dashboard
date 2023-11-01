@@ -27,7 +27,6 @@ const useList = [];
 const netList = [];
 var date = "";
 var time = "";
-var checkFetch = false;
 
 // Calculating Data
 function AvgData(list) {
