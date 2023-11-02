@@ -53,7 +53,7 @@ body {
 }
 
 .rightBoard .data-box .big-value {
-    font-size: 3.5rem;
+    font-size: 3rem;
 }
 
 
@@ -106,7 +106,7 @@ body {
 }
 
 .button-div button {
-    width: 30%;
+    width: 35%;
     background-color: #fff;
     border-radius: 15px;
     height: 30%;
@@ -116,4 +116,9 @@ body {
 
 .bold {
     font-weight: 800;
+}
+
+a {
+    text-decoration: none;
+    color: black;
 }
