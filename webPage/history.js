@@ -20,6 +20,7 @@ const analytics = getAnalytics(app);
 const db = getFirestore(app);
 const archiveCol = collection(db, 'archive');
 
+
 // Collection of data
 const tempList = [];
 const humidList = [];
@@ -27,7 +28,7 @@ const genList = [];
 const useList = [];
 const netList = [];
 var date = "";
-var time = "";
+var queryTime = "";
 
 // Calculating Data
 function AvgData(list) {
@@ -40,6 +41,20 @@ function SumData(list) {
     return sum
 }
 
+//Select time duration
+function getSelectedTime() {
+    // Get the selected value from the dropdown
+    var select = document.getElementById("timeSelect");
+    var selectedTime = select.options[select.selectedIndex].value;
+
+    // Format the selected value as "2016-06-01_{value}"
+    queryTime = "2016-06-01_" + selectedTime;
+
+    // Display the result
+    var time_div = document.getElementById("time-value");
+    time_div.textContent = select.options[select.selectedIndex].innerHTML;
+    console.log(queryTime);
+}
 
 // Showing data on webpage
 function ShowData(list, divID, postfix) {
@@ -87,7 +102,7 @@ function decompressGzip(gzipData) {
 }
 
 
-
+/*
 
 // Retrieving Data
 function FetchData(docId) {
@@ -107,9 +122,6 @@ function FetchData(docId) {
                 //console.log(decomData[0].humidity);
 
 
-
-                
-                /*
                 tempList.push(decomData.temperature);
                 humidList.push(decomData.humidity);
                 genList.push(decomData.gen);
@@ -128,7 +140,7 @@ function FetchData(docId) {
                 const time_div = document.getElementById("time-value");
                 date_div.innerHTML = date;
                 time_div.innerHTML = time;
-                */
+                
                 
             } else {
                 console.log("No data field found in the document.");
@@ -144,5 +156,9 @@ function FetchData(docId) {
         
 }
 
-const yesterdayId = "2016-06-01_0";
-FetchData(yesterdayId);
+FetchData(queryTime);
+
+*/
+
+const time_btn = document.getElementById('time-submit');
+time_btn.addEventListener('click', getSelectedTime);
