@@ -1,8 +1,13 @@
-// Import the needed functions from the SDKs
+//Import the needed functions from the SDKs
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-analytics.js";
 import { getFirestore, collection, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
 import pako from "https://cdn.jsdelivr.net/npm/pako@2.1.0/+esm";
+
+const chartJsScript = document.createElement('script');
+chartJsScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+document.head.appendChild(chartJsScript);
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyCieUJHOvKpPm7OT0jgI7uTfzLtC3fCBsM",
@@ -28,7 +33,7 @@ const genList = [];
 const useList = [];
 const netList = [];
 var date = "";
-var queryTime = "";
+var queryTime = "2016-06-01_0";
 
 // Calculating Data
 function AvgData(list) {
@@ -54,6 +59,7 @@ function getSelectedTime() {
     var time_div = document.getElementById("time-value");
     time_div.textContent = select.options[select.selectedIndex].innerHTML;
     console.log(queryTime);
+    FetchData(queryTime);
 }
 
 // Showing data on webpage
@@ -102,9 +108,57 @@ function decompressGzip(gzipData) {
 }
 
 
-/*
+
+
+
+const time_btn = document.getElementById('time-submit');
+time_btn.addEventListener('click', getSelectedTime);
+
+
+
+function renderLineChart(timestampList, accumulatedNetList) {
+    
+    const ctx = document.getElementById('line-chart').getContext('2d');
+    if (window.lineChart) {
+        window.lineChart.destroy(); // Destroy the existing chart
+    }
+    window.lineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: timestampList,
+                datasets: [{
+                    label: 'Accumulated Net Energy',
+                    data: accumulatedNetList
+                }]
+            },
+            options: {
+                maintainAspectRatio: true,
+                scales: {
+                    x: {},
+                    y: {
+                        max: 1000,
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Accumulated Net Energy',
+                            color: '#000000',
+                            font: {
+                                family: 'Times',
+                                size: 16,
+                                style: 'normal',
+                                lineHeight: 1.2
+                        },
+                        padding: {top: 30, left: 0, right: 0, bottom: 0}
+                    }
+                    },
+                },
+            }
+        });
+};
 
 // Retrieving Data
+// Modify the FetchData function to accumulate net energy and timestamps
+
 function FetchData(docId) {
     console.log("Retrieving data for document with ID:", docId);
 
@@ -118,47 +172,43 @@ function FetchData(docId) {
                 const gzipData = data.data;
                 // Decompress gzip data
                 const decomData = decompressGzip(gzipData);
-                console.log(decomData);
-                //console.log(decomData[0].humidity);
 
+                if (decomData) {
+                    let accumulatedNet = 0; // Initialize accumulated net energy
+                    let i = 0;
+                    const accumulatedNetList = [];
 
-                tempList.push(decomData.temperature);
-                humidList.push(decomData.humidity);
-                genList.push(decomData.gen);
-                useList.push(decomData.use);
-                netList.push(decomData.net);
-                date = decomData.date;
-                time = decomData.time;
+                    const arrayRange = (start, stop, step) =>
+                        Array.from(
+                        { length: (stop - start) / step + 1 },
+                        (value, index) => start + index * step
+                        );
+                    const timestampList = arrayRange(1, 60, 1);
 
-                // Update the webpage with the retrieved data
-                ShowData(tempList, "temp-value", " °C");
-                ShowData(humidList, "humid-value", " %");
-                ShowData(genList, "gen-value", " kW");
-                ShowData(useList, "use-value", " kW");
-                ShowData(netList, "net-value", " kW");
-                const date_div = document.getElementById("date-value");
-                const time_div = document.getElementById("time-value");
-                date_div.innerHTML = date;
-                time_div.innerHTML = time;
-                
-                
+                    for (const dataPoint of decomData) {
+                    
+                        // Calculate and store accumulated net energy for each minute
+                        accumulatedNet += parseFloat(dataPoint.net);
+
+                        i++;
+                        if (i%10 == 0){
+                            accumulatedNetList.push(accumulatedNet);
+                        }
+                    }
+                    
+                    // Call a function to update your Chart.js chart with the new data
+                    chartJsScript.onload = renderLineChart(timestampList, accumulatedNetList);
+                }
             } else {
-                console.log("No data field found in the document.");
+          console.log("No data field found in the document.");
             }
         } else {
             console.log("Document with ID not found.");
         }
-        })
-    
-        .catch((error) => {
-            console.error("Error fetching data: ", error);
-        });
-        
+    })
+    .catch((error) => {
+        console.error("Error fetching data: ", error);
+    });
 }
 
 FetchData(queryTime);
-
-*/
-
-const time_btn = document.getElementById('time-submit');
-time_btn.addEventListener('click', getSelectedTime);
