@@ -77,14 +77,6 @@ function decompressGzip(gzipData) {
 }
 
 
-
-
-
-const time_btn = document.getElementById('time-submit');
-time_btn.addEventListener('click', getSelectedTime);
-
-
-
 function renderLineChart(timestampList, accumulatedNetList) {
 
     const ctx = document.getElementById('line-chart').getContext('2d');
@@ -180,4 +172,6 @@ function FetchData(docId) {
         });
 }
 
+const time_btn = document.getElementById('time-submit');
+time_btn.addEventListener('click', getSelectedTime);
 FetchData(queryTime);
