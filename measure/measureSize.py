@@ -6,13 +6,13 @@ initialize_app(cred)
 db = firestore.client()
 
 collection = db.collection("archive")
-doc = collection.document('2016-03-01_1').get()
+doc = collection.document('2016-06-01_12').get()
 data = doc.to_dict()
 
 # Assuming 'data' is already in binary format (e.g., gzip data)
 binary_data = data['data']  # Replace 'binary_field' with the actual field containing binary data
 
-file_path = r"C:\Users\Stark\Desktop\gzip3_1.gz"  # Replace with your desired file path
+file_path = r"C:\Users\Stark\Desktop\Gzipfile\gzip10.gz"  # Replace with your desired file path
 
 # Write binary data to a local file
 with open(file_path, 'wb') as file:
