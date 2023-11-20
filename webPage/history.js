@@ -122,17 +122,30 @@ function renderLineChart(timestampList, accumulatedNetList) {
 
 function FetchData(docId) {
     console.log("Retrieving data for document with ID:", docId);
-
     const yesterdayDocRef = doc(archiveCol, docId);
+
+    // Record the start time
+    const startTime = performance.now();
 
     getDoc(yesterdayDocRef)
         .then((docSnapshot) => {
+
             if (docSnapshot.exists) {
                 const data = docSnapshot.data();
                 if (data && data.data) {
                     const gzipData = data.data;
+
+                    // Record the start time for decompression
+                    const decomStartTime = performance.now();
+
                     // Decompress gzip data
                     const decomData = decompressGzip(gzipData);
+
+                    // Record the end time for decompression
+                    const decomEndTime = performance.now();
+                    // Calculate and log the decompression time
+                    const decomTime = decomEndTime - decomStartTime;
+                    console.log('Decompression Time:', decomTime, 'milliseconds');
 
                     if (decomData) {
                         let accumulatedNet = 0; // Initialize accumulated net energy
@@ -156,9 +169,16 @@ function FetchData(docId) {
                                 accumulatedNetList.push(accumulatedNet);
                             }
                         }
-
                         // Call a function to update your Chart.js chart with the new data
                         chartJsScript.onload = renderLineChart(timestampList, accumulatedNetList);
+                        
+                        // Record the end time
+                        const endTime = performance.now();
+
+                        // Calculate and log the response time
+                        const queryResponseTime = endTime - startTime;
+                        console.log('Response Time:', queryResponseTime, 'milliseconds');
+
                     }
                 } else {
                     console.log("No data field found in the document.");
