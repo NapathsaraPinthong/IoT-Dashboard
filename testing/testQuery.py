@@ -14,8 +14,8 @@ collection_name = "primary"
 
 # Define the start and end time for the query
 date = "1/6/2016"
-start_time = "20:00:00"
-end_time = "20:00:10"
+start_time = "19:00:00"
+end_time = "19:59:59"
 
 # Create a reference to the collection
 collection_ref = db.collection(collection_name)

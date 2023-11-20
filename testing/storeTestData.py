@@ -4,7 +4,7 @@ import pandas as pd
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate(
-    r"C:\Users\HUAWEI\OneDrive\เดสก์ท็อป\IoT-Dashboard\testing\test-iotdashboard-firebase-adminsdk-1oqvm-14127a112e.json")
+    r"C:\Users\HUAWEI\OneDrive\เดสก์ท็อป\IoT-Dashboard\testing\test2-iotdashboard-firebase-adminsdk-m964p-0347f016bd.json")
 
 firebase_admin.initialize_app(cred)
 
