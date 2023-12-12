@@ -33,7 +33,6 @@ function getSelectedTime() {
     var select = document.getElementById("timeSelect");
     var selectedTime = select.options[select.selectedIndex].value;
 
-    // Format the selected value as "2016-06-01_{value}"
     queryTime = "2016-06-01_" + selectedTime;
 
     // Display the result
@@ -45,7 +44,7 @@ function getSelectedTime() {
 
 function parseCSV(csvData) {
     const lines = csvData.split('\n');
-    const headers = lines[0].split(','); // Assuming the first line contains headers
+    const headers = lines[0].split(','); // The first line contains headers
     const result = [];
 
     for (let i = 1; i < lines.length; i++) {
@@ -53,7 +52,6 @@ function parseCSV(csvData) {
         if (currentLine.length === headers.length) {
             const dataObject = {};
             for (let j = 0; j < headers.length; j++) {
-                // Use trim() to remove leading/trailing whitespace, including newline characters
                 dataObject[headers[j].trim()] = currentLine[j].trim();
             }
             result.push(dataObject);
@@ -72,7 +70,7 @@ function decompressGzip(gzipData) {
         return parseData;
     } catch (error) {
         console.error("Error during decompression: ", error);
-        return null; // Handle the error as needed
+        return null; 
     }
 }
 
@@ -118,8 +116,6 @@ function renderLineChart(timestampList, accumulatedNetList) {
 };
 
 // Retrieving Data
-// Modify the FetchData function to accumulate net energy and timestamps
-
 function FetchData(docId) {
     console.log("Retrieving data for document with ID:", docId);
     const yesterdayDocRef = doc(archiveCol, docId);
@@ -143,6 +139,7 @@ function FetchData(docId) {
 
                     // Record the end time for decompression
                     const decomEndTime = performance.now();
+
                     // Calculate and log the decompression time
                     const decomTime = decomEndTime - decomStartTime;
                     console.log('Decompression Time:', decomTime, 'milliseconds');
@@ -169,7 +166,7 @@ function FetchData(docId) {
                                 accumulatedNetList.push(accumulatedNet);
                             }
                         }
-                        // Call a function to update your Chart.js chart with the new data
+                        // Call a function to update Chart.js chart with the new data
                         chartJsScript.onload = renderLineChart(timestampList, accumulatedNetList);
                         
                         // Record the end time

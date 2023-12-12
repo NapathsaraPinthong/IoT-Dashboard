@@ -11,7 +11,7 @@ cred = credentials.Certificate(
 
 firebase_admin.initialize_app(cred)
 
-# Load your time-series dataset
+# Load time-series dataset
 dataset = pd.read_csv(
     r"C:\Users\Stark\Desktop\IoT-Dashboard\prepareData\dataset_clean.csv")
 
@@ -23,7 +23,7 @@ part2 = dataset.iloc[:-3510]
 db = firestore.client()
 temporary_collection = db.collection("temporary")
 for _, row in part1.iterrows():
-    # Convert the time field (which contains only the time portion) to a string
+    # Convert the time field to a string
     time_str = row["time"]
 
     # Use the time_str as the document ID

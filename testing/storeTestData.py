@@ -8,7 +8,7 @@ cred = credentials.Certificate(
 
 firebase_admin.initialize_app(cred)
 
-# Load your time-series dataset
+# Load time-series dataset
 dataset = pd.read_csv(
     r"C:\Users\HUAWEI\OneDrive\เดสก์ท็อป\IoT-Dashboard\prepareData\dataset_clean.csv")
 

@@ -2,15 +2,11 @@ const chartJsScript = document.createElement('script');
 chartJsScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
 document.head.appendChild(chartJsScript);
 
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
 import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 const firebaseConfig = {
     apiKey: "AIzaSyA0yQ8OHzvWLLV012WbT1juEyYDNDmr9jg",
     authDomain: "test2-iotdashboard.firebaseapp.com",
@@ -27,7 +23,6 @@ const analytics = getAnalytics(app);
 
 const db = getFirestore(app);
 
-// Specify your collection name
 const collectionName = 'primary';
 
 // Define the start and end time for the query
@@ -67,7 +62,7 @@ getDocs(q)
             accumulatedNetList.push(accumulatedNet);
         }
     });
-    // Call a function to update your Chart.js chart with the new data
+    // Call a function to update Chart.js chart with the new data
     chartJsScript.onload = renderLineChart(timestampList, accumulatedNetList)
 
     // Record the end time

@@ -86,19 +86,17 @@ FetchData();
 
 
 // Schedule to run the compressData function hourly
-/*
 function CompressData() {
     console.log("Compressing and archiving data...");
 
-    let querySnapshot; // Define querySnapshot outside the first .then()
-
+    let querySnapshot; 
     getDocs(tempCol)
         .then((tempColSnapshot) => {
-            querySnapshot = tempColSnapshot; // Store querySnapshot for later use
+            querySnapshot = tempColSnapshot; 
 
             if (querySnapshot.empty) {
                 console.log("No data in the temporary collection to compress and archive.");
-                return;  // Exit the function if there's no data
+                return;  
             }
 
             const jsonData = [];
@@ -109,13 +107,13 @@ function CompressData() {
 
             //Gzip the JSON data
             const jsonString = JSON.stringify(jsonData);
-            const uint8Array = pako.deflate(jsonString, { to: 'string' }); // Gzip the JSON data directly
+            const uint8Array = pako.deflate(jsonString, { to: 'string' }); 
             const gzippedDataBase64 = btoa(uint8Array);
 
             // Extract the hour from the time of the first document
-            const documentDate = new Date(jsonData[0].date); // Parse the date
+            const documentDate = new Date(jsonData[0].date); 
             const year = documentDate.getFullYear();
-            const month = (documentDate.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-based
+            const month = (documentDate.getMonth() + 1).toString().padStart(2, '0'); 
             const day = documentDate.getDate().toString().padStart(2, '0');
             const hour = jsonData[0].time.split(":")[0];
 
@@ -123,13 +121,13 @@ function CompressData() {
             const documentId = `${year}-${day}-${month}_${hour}`;
 
             // Update the archive collection with the gzipped data and the custom document ID
-            return setDoc(doc(archiveCol, documentId), { data: gzippedDataBase64 }); // Use setDoc
+            return setDoc(doc(archiveCol, documentId), { data: gzippedDataBase64 });
 
         })
         .then(() => {
             // Clear the temporary collection after successful archiving
             querySnapshot.forEach(async (doc) => {
-                await deleteDoc(doc.ref); // Use deleteDoc to delete each document reference
+                await deleteDoc(doc.ref);
             });
         })
         .catch((error) => {
@@ -137,4 +135,3 @@ function CompressData() {
         });
 }
 setInterval(CompressData, 3600000);
-*/
