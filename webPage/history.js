@@ -10,14 +10,14 @@ document.head.appendChild(chartJsScript);
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCieUJHOvKpPm7OT0jgI7uTfzLtC3fCBsM",
-    authDomain: "iot-dashboard-66709.firebaseapp.com",
-    projectId: "iot-dashboard-66709",
-    storageBucket: "iot-dashboard-66709.appspot.com",
-    messagingSenderId: "336370107618",
-    appId: "1:336370107618:web:536306a4fe5ce6ff80cabb",
-    measurementId: "G-X8PN718VWN"
-};
+    apiKey: "AIzaSyCOkHMkvDkUT9cN2VKgP0j_NdK3hx-bw3o",
+    authDomain: "iot-dashboard-final.firebaseapp.com",
+    projectId: "iot-dashboard-final",
+    storageBucket: "iot-dashboard-final.appspot.com",
+    messagingSenderId: "658455397004",
+    appId: "1:658455397004:web:8c6ac082a76955989cf1a9",
+    measurementId: "G-YMD309505H"
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

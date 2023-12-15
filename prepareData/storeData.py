@@ -7,13 +7,13 @@ from datetime import datetime
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate(
-    r"C:\Users\Stark\Desktop\IoT-Dashboard\prepareData\iot-dashboard-66709-firebase-adminsdk-gwzj0-45780976ab.json")
+    r"C:\Users\HUAWEI\OneDrive\เดสก์ท็อป\IoT-Dashboard\prepareData\iot-dashboard-final-firebase-adminsdk-dpky6-f35a9531e2.json")
 
 firebase_admin.initialize_app(cred)
 
 # Load time-series dataset
 dataset = pd.read_csv(
-    r"C:\Users\Stark\Desktop\IoT-Dashboard\prepareData\dataset_clean.csv")
+    r"C:\Users\HUAWEI\OneDrive\เดสก์ท็อป\IoT-Dashboard\prepareData\dataset.csv")
 
 # Split the dataset into two parts
 part1 = dataset.tail(3510)

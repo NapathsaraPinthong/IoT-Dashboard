@@ -4,14 +4,14 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.2/firebase
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCieUJHOvKpPm7OT0jgI7uTfzLtC3fCBsM",
-    authDomain: "iot-dashboard-66709.firebaseapp.com",
-    projectId: "iot-dashboard-66709",
-    storageBucket: "iot-dashboard-66709.appspot.com",
-    messagingSenderId: "336370107618",
-    appId: "1:336370107618:web:536306a4fe5ce6ff80cabb",
-    measurementId: "G-X8PN718VWN"
-};
+    apiKey: "AIzaSyCOkHMkvDkUT9cN2VKgP0j_NdK3hx-bw3o",
+    authDomain: "iot-dashboard-final.firebaseapp.com",
+    projectId: "iot-dashboard-final",
+    storageBucket: "iot-dashboard-final.appspot.com",
+    messagingSenderId: "658455397004",
+    appId: "1:658455397004:web:8c6ac082a76955989cf1a9",
+    measurementId: "G-YMD309505H"
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -39,17 +39,42 @@ function SumData(list) {
     return sum
 }
 
+function findMostFrequest(arr) {
+    let compare = "";
+    let mostFreq = "";
+    
+    arr.reduce((acc, val) => {
+      if(val in acc){               // if key already exists
+         acc[val]++;                // then increment it by 1
+      }else{
+         acc[val] = 1;      // or else create a key with value 1
+      }
+      if(acc[val] > compare){   // if value of that key is greater
+                                // than the compare value.
+         compare = acc[val];    // than make it a new compare value.
+         mostFreq = val;        // also make that key most frequent.
+      }
+      return acc;
+    }, {})
+}
+
 
 // Showing data on webpage
 function ShowData(list, divID, postfix) {
     let data = 0;
-    if (list == tempList || list == humidList) {
+    if (list == tempList) {
         data = AvgData(list);
-    } else {
-        data = SumData(list);
+        if(round(data) = 11) {
+            data = "31 - 33"
+        }
+    } else if (list == humidList){
+        data = findMostFrequest(list);
+    }
+    else {
+        data = SumData(list).toFixed(2);
     }
     const div = document.getElementById(`${divID}`);
-    div.innerHTML = data.toFixed(2) + postfix;
+    div.innerHTML = data + postfix;
 }
 
 // Retrieving Data
@@ -58,7 +83,7 @@ function FetchData() {
     getDocs(tempCol).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            tempList.push(data.temperature);
+            tempList.push(data.temperture);
             humidList.push(data.humidity);
             genList.push(data.gen);
             useList.push(data.use);
