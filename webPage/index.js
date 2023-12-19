@@ -11,7 +11,7 @@ const firebaseConfig = {
     messagingSenderId: "658455397004",
     appId: "1:658455397004:web:8c6ac082a76955989cf1a9",
     measurementId: "G-YMD309505H"
-  };
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -42,19 +42,19 @@ function SumData(list) {
 function findMostFrequest(arr) {
     let compare = "";
     let mostFreq = "";
-    
+
     arr.reduce((acc, val) => {
-      if(val in acc){               // if key already exists
-         acc[val]++;                // then increment it by 1
-      }else{
-         acc[val] = 1;      // or else create a key with value 1
-      }
-      if(acc[val] > compare){   // if value of that key is greater
-                                // than the compare value.
-         compare = acc[val];    // than make it a new compare value.
-         mostFreq = val;        // also make that key most frequent.
-      }
-      return acc;
+        if (val in acc) {               // if key already exists
+            acc[val]++;                // then increment it by 1
+        } else {
+            acc[val] = 1;      // or else create a key with value 1
+        }
+        if (acc[val] > compare) {   // if value of that key is greater
+            // than the compare value.
+            compare = acc[val];    // than make it a new compare value.
+            mostFreq = val;        // also make that key most frequent.
+        }
+        return acc;
     }, {})
 }
 
@@ -64,11 +64,18 @@ function ShowData(list, divID, postfix) {
     let data = 0;
     if (list == tempList) {
         data = AvgData(list);
-        if(round(data) = 11) {
+        if (Math.round(data) == 11) {
             data = "31 - 33"
         }
-    } else if (list == humidList){
+    } else if (list == humidList) {
         data = findMostFrequest(list);
+        if (data == "L") {
+            data = "Low"
+        } else if (data == "M") {
+            data = "Medium"
+        } else {
+            data = "High"
+        }
     }
     else {
         data = SumData(list).toFixed(2);
@@ -114,14 +121,14 @@ FetchData();
 function CompressData() {
     console.log("Compressing and archiving data...");
 
-    let querySnapshot; 
+    let querySnapshot;
     getDocs(tempCol)
         .then((tempColSnapshot) => {
-            querySnapshot = tempColSnapshot; 
+            querySnapshot = tempColSnapshot;
 
             if (querySnapshot.empty) {
                 console.log("No data in the temporary collection to compress and archive.");
-                return;  
+                return;
             }
 
             const jsonData = [];
@@ -132,13 +139,13 @@ function CompressData() {
 
             //Gzip the JSON data
             const jsonString = JSON.stringify(jsonData);
-            const uint8Array = pako.deflate(jsonString, { to: 'string' }); 
+            const uint8Array = pako.deflate(jsonString, { to: 'string' });
             const gzippedDataBase64 = btoa(uint8Array);
 
             // Extract the hour from the time of the first document
-            const documentDate = new Date(jsonData[0].date); 
+            const documentDate = new Date(jsonData[0].date);
             const year = documentDate.getFullYear();
-            const month = (documentDate.getMonth() + 1).toString().padStart(2, '0'); 
+            const month = (documentDate.getMonth() + 1).toString().padStart(2, '0');
             const day = documentDate.getDate().toString().padStart(2, '0');
             const hour = jsonData[0].time.split(":")[0];
 

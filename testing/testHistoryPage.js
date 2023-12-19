@@ -27,8 +27,8 @@ const collectionName = 'primary';
 
 // Define the start and end time for the query
 const date = '1/6/2016';
-const startTime = '21:00:00';
-const endTime = '22:00:00';
+const startTime = '23:00:00';
+const endTime = '00:00:00';
 let accumulatedNet = 0; // Initialize accumulated net energy
 let i = 0;
 const accumulatedNetList = [];
